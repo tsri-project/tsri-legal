@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "wrangler pages dev dist",
-    "deploy": "vite build && wrangler pages deploy dist --project-name=tsri-legal-km-portal",
+    "deploy": "vite build && wrangler pages deploy dist --project-name=tsri-legal",
     "db:init:local": "wrangler d1 execute tsri_legal_km_db --local --file=./db/schema.sql && wrangler d1 execute tsri_legal_km_db --local --file=./db/seed.sql",
     "db:init:remote": "wrangler d1 execute tsri_legal_km_db --remote --file=./db/schema.sql && wrangler d1 execute tsri_legal_km_db --remote --file=./db/seed.sql"
   },
