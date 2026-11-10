@@ -89,3 +89,15 @@ CREATE TABLE c1c2a_evaluations (
   evidence_note TEXT,
   evaluated_at TEXT NOT NULL
 );
+
+DROP TABLE IF EXISTS legal_chains_24;
+CREATE TABLE legal_chains_24 (
+  chain_id TEXT PRIMARY KEY,
+  group_name TEXT NOT NULL,
+  title TEXT NOT NULL,
+  level1 TEXT NOT NULL,
+  level2 TEXT NOT NULL,
+  level3 TEXT NOT NULL,
+  mechanism TEXT NOT NULL,
+  cluster_owner TEXT NOT NULL
+);

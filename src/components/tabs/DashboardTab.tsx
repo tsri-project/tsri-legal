@@ -42,9 +42,9 @@ export function DashboardTab({
 }: DashboardTabProps) {
   const kpiCards = [
     {
-      label: 'คลังกฎหมาย 11 หมวด',
-      value: '100 ไฟล์',
-      note: '101 รหัสทะเบียน (คัดกรอง SHA-256)',
+      label: 'คลังกฎหมาย 12 หมวด (V6)',
+      value: '103 ไฟล์',
+      note: '104 รหัสทะเบียน · 24 สายโซ่ 3 ระดับ',
       tone: 'primary' as const,
       iconBg: 'var(--primary)',
       icon: <BookOpen className="w-4 h-4 text-[var(--on-primary)]" />,
@@ -188,7 +188,7 @@ export function DashboardTab({
                 style={{ background: 'rgba(255,255,255,0.45)', color: 'var(--on-primary)' }}
               >
                 <BookOpen className="w-4 h-4" />
-                <span>เปิดคลัง 100 ไฟล์</span>
+                <span>เปิดคลัง 103 ไฟล์</span>
               </button>
             </div>
           </div>
@@ -226,8 +226,8 @@ export function DashboardTab({
 
           <SfCard className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="space-y-1">
-              <div className="text-xs text-[var(--muted)]">คลังเอกสารต้นฉบับ Google Drive</div>
-              <div className="text-sm font-semibold">ครบทั้ง 11 หมวด (100 ไฟล์จริง)</div>
+              <div className="text-xs text-[var(--muted)]">คลังเอกสารต้นฉบับ Google Drive (V6)</div>
+              <div className="text-sm font-semibold">ครบทั้ง 12 หมวด (103 ไฟล์จริง · 75–80%)</div>
             </div>
             <a
               href={DB.links.ROOT_DB}
@@ -361,7 +361,7 @@ export function DashboardTab({
           <div className="flex items-center justify-between gap-2">
             <div>
               <h3 className="text-base font-semibold">
-                คลังกฎหมาย สกสว. ทั้ง 11 หมวด (100 ไฟล์จริง)
+                คลังกฎหมาย สกสว. ทั้ง 12 หมวด (103 ไฟล์จริง / 104 รหัส)
               </h3>
               <p className="text-xs text-[var(--muted)] mt-0.5">
                 แตะที่หมวดเพื่อเปิดดูรายการเอกสารทันที
@@ -401,6 +401,72 @@ export function DashboardTab({
           </div>
         </SfCard>
       </div>
+
+      {/* Slide Deck 3: V6 TOR 3 Legal Levels */}
+      <SlideDeck
+        title="โครงสร้างกฎหมาย 3 ระดับตามกรอบ TOR ข้อ 4.1.1 (รุ่น V6)"
+        subtitle="เลื่อนซ้าย–ขวาเพื่อดูขอบเขตกฎหมายแม่บท กฎรอง และกฎหมายที่เกี่ยวข้อง (หมวด 12)"
+        itemCount={(DB.torLevels3 || []).length}
+        itemClassName="sf-slide-item sf-slide-item--third"
+      >
+        {(DB.torLevels3 || []).map((lvl, idx) => (
+          <SfCard
+            key={lvl.level_code}
+            tone={idx === 0 ? 'sky' : idx === 1 ? 'mint' : 'lilac'}
+            className="h-full flex flex-col justify-between gap-3"
+          >
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <SfBadge tone="surface">{lvl.level_code}</SfBadge>
+                <SfBadge tone="surface">{lvl.doc_count}</SfBadge>
+              </div>
+              <h3 className="text-sm md:text-base font-semibold leading-snug">{lvl.level_name}</h3>
+              <p className="text-xs opacity-90 whitespace-pre-line line-clamp-4 leading-relaxed">
+                {lvl.core_laws}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-black/10 text-[11px] font-medium opacity-85">
+              {lvl.clusters_linked}
+            </div>
+          </SfCard>
+        ))}
+      </SlideDeck>
+
+      {/* Slide Deck 4: V6 TOR 6 Deliverables */}
+      <SlideDeck
+        title="ความก้าวหน้าการส่งมอบงาน 6 ชิ้นตาม TOR (รุ่น V6 · 75–80%)"
+        subtitle="เลื่อนซ้าย–ขวาเพื่อดูสถานะผลงานแต่ละชิ้นพร้อมลิงก์เปิดเอกสาร"
+        itemCount={(DB.torDeliverables6 || []).length}
+        itemClassName="sf-slide-item sf-slide-item--compact"
+      >
+        {(DB.torDeliverables6 || []).map((deliv) => (
+          <SfCard
+            key={deliv.deliv_no}
+            className="h-full flex flex-col justify-between gap-3 border border-[var(--border)]"
+          >
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-1.5">
+                <SfBadge tone="primary">{deliv.deliv_no}</SfBadge>
+                <SfBadge tone="positive">{deliv.status}</SfBadge>
+              </div>
+              <div className="text-[11px] font-semibold text-[var(--muted)]">{deliv.tor_code}</div>
+              <h3 className="text-sm font-semibold leading-snug line-clamp-2">{deliv.title}</h3>
+              <p className="text-xs text-[var(--muted)] whitespace-pre-line line-clamp-4 leading-relaxed">
+                {deliv.key_metrics}
+              </p>
+            </div>
+            <a
+              href={deliv.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sf-button sf-button--secondary w-full !min-h-[38px] text-xs"
+            >
+              <span>เปิดเอกสารส่งมอบ</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </SfCard>
+        ))}
+      </SlideDeck>
     </div>
   );
 }

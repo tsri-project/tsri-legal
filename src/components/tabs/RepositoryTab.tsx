@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ExternalLink, Eye, Filter, LayoutGrid, Table2 } from 'lucide-react';
 import { MASTER_BUNDLE as DB } from '../../data/tsriDatabase';
 import { LegalDocument, StatutorySection } from '../../types/portal';
 import { SfBadge, SfButton, SfCard, SfSegmented, SlideDeck } from '../SoftFocusUI';
 
 interface RepositoryTabProps {
-  repoSubView: 'files' | 'sections';
-  setRepoSubView: (v: 'files' | 'sections') => void;
+  repoSubView: 'files' | 'sections' | 'chains24';
+  setRepoSubView: (v: 'files' | 'sections' | 'chains24') => void;
   selectedCat: string;
   setSelectedCat: (v: string) => void;
   selectedCluster: string;
@@ -42,6 +42,24 @@ export function RepositoryTab({
   const [displayMode, setDisplayMode] = useState<'cards' | 'table'>('cards');
   const [showFilters, setShowFilters] = useState(true);
 
+  const filteredChains24 = useMemo(() => {
+    const q = globalSearch.trim().toLowerCase();
+    return (DB.chains24 || []).filter((ch) => {
+      if (selectedCluster !== 'ALL' && !ch.cluster_owner.includes(selectedCluster)) return false;
+      if (!q) return true;
+      return (
+        ch.chain_id.toLowerCase().includes(q) ||
+        ch.group_name.toLowerCase().includes(q) ||
+        ch.title.toLowerCase().includes(q) ||
+        ch.level1.toLowerCase().includes(q) ||
+        ch.level2.toLowerCase().includes(q) ||
+        ch.level3.toLowerCase().includes(q) ||
+        ch.mechanism.toLowerCase().includes(q) ||
+        ch.cluster_owner.toLowerCase().includes(q)
+      );
+    });
+  }, [globalSearch, selectedCluster]);
+
   const hasActiveFilter =
     selectedCat !== 'ALL' ||
     selectedCluster !== 'ALL' ||
@@ -59,8 +77,9 @@ export function RepositoryTab({
             value={repoSubView}
             onChange={setRepoSubView}
             options={[
-              { value: 'files', label: `ทะเบียน 11 หมวด (${filteredDocs.length}/101)` },
+              { value: 'files', label: `12 หมวด (${filteredDocs.length}/104)` },
               { value: 'sections', label: `ตัวบทมาตรา (${filteredSections.length})` },
+              { value: 'chains24', label: `สายโซ่ 3 ระดับ (${filteredChains24.length})` },
             ]}
           />
 
@@ -130,7 +149,7 @@ export function RepositoryTab({
                 aria-label="เลือกหมวดเอกสาร"
                 className="sf-input text-sm"
               >
-                <option value="ALL">ทุกหมวด (หมวดที่ 1–11)</option>
+                <option value="ALL">ทุกหมวด (หมวดที่ 1–12)</option>
                 {DB.categories11.map((c, i) => (
                   <option key={c.cat_no} value={String(i + 1)}>
                     {c.cat_no}: {c.cat_name} ({c.active_count} ไฟล์)
@@ -157,7 +176,7 @@ export function RepositoryTab({
                   onChange={(e) => setOnlyActiveFiles(e.target.checked)}
                   className="w-4 h-4 accent-[var(--positive)]"
                 />
-                <span>เฉพาะ 100 ไฟล์ใช้งานจริง</span>
+                <span>เฉพาะ 103 ไฟล์ใช้งานจริง</span>
               </label>
 
               {hasActiveFilter && (
@@ -356,6 +375,89 @@ export function RepositoryTab({
             </table>
           </SfCard>
         )
+      ) : repoSubView === 'chains24' ? (
+        <div className="space-y-4">
+          <SfCard tone="primary" className="!p-4 text-xs leading-relaxed">
+            <strong>สายโซ่ความเชื่อมโยงกฎหมาย 3 ระดับ (Multi-Level Legal Linkage · 24 สายโซ่ รุ่น V6):</strong>{' '}
+            เชื่อมโยงระดับที่ 1 กฎหมายแม่บท ↔ ระดับที่ 2 กฎรอง/คู่มือ 4 เล่ม/SOP ↔ ระดับที่ 3 กฎหมายที่เกี่ยวข้อง &amp; หมวด 12 (งบประมาณ/การคลัง/พัสดุ)
+          </SfCard>
+
+          {filteredChains24.length === 0 ? (
+            <SfCard className="text-center py-8 text-sm text-[var(--muted)]">
+              ไม่พบสายโซ่กฎหมายที่ตรงกับคำค้นหา
+            </SfCard>
+          ) : displayMode === 'cards' ? (
+            <div className="space-y-4">
+              {filteredChains24.map((ch) => (
+                <SfCard key={ch.chain_id} className="space-y-3 border border-[var(--border)]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[var(--border)]">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <SfBadge tone="primary">
+                        <span className="font-mono">{ch.chain_id}</span>
+                      </SfBadge>
+                      <SfBadge tone="lilac">{ch.group_name}</SfBadge>
+                    </div>
+                    <SfBadge tone="mint">{ch.cluster_owner}</SfBadge>
+                  </div>
+
+                  <h3 className="text-sm md:text-base font-semibold">{ch.title}</h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                    <div className="p-3.5 rounded-2xl bg-[var(--sky)] space-y-1">
+                      <div className="font-semibold">ระดับที่ 1: แม่บท (4.1.1.1)</div>
+                      <p className="opacity-90 leading-relaxed">{ch.level1}</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-[var(--mint)] space-y-1">
+                      <div className="font-semibold">ระดับที่ 2: กฎรอง/SOP (4.1.1.2)</div>
+                      <p className="opacity-90 leading-relaxed">{ch.level2}</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-[var(--lilac)] space-y-1">
+                      <div className="font-semibold">ระดับที่ 3: กม.เกี่ยวข้อง &amp; หมวด 12</div>
+                      <p className="opacity-90 leading-relaxed">{ch.level3}</p>
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-2xl bg-[var(--bg)] text-xs text-[var(--muted)]">
+                    <strong className="text-[var(--ink)]">กลไกปฏิบัติงาน:</strong> {ch.mechanism}
+                  </div>
+                </SfCard>
+              ))}
+            </div>
+          ) : (
+            <SfCard className="overflow-x-auto p-4">
+              <table className="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr className="bg-[var(--surface-soft)] text-[var(--ink)] border-b border-[var(--border)]">
+                    <th className="py-2.5 px-3 rounded-l-xl">รหัส</th>
+                    <th className="py-2.5 px-3">ชุด / ชื่อสายโซ่</th>
+                    <th className="py-2.5 px-3">ระดับที่ 1 (4.1.1.1)</th>
+                    <th className="py-2.5 px-3">ระดับที่ 2 (4.1.1.2)</th>
+                    <th className="py-2.5 px-3">ระดับที่ 3 (4.1.1.3)</th>
+                    <th className="py-2.5 px-3 rounded-r-xl">กลไก &amp; เจ้าภาพ</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--border)]">
+                  {filteredChains24.map((ch) => (
+                    <tr key={ch.chain_id} className="hover:bg-[var(--bg)]">
+                      <td className="py-2.5 px-3 font-mono font-bold whitespace-nowrap">{ch.chain_id}</td>
+                      <td className="py-2.5 px-3">
+                        <div className="text-[11px] font-semibold text-[var(--positive)]">{ch.group_name}</div>
+                        <div className="font-semibold mt-0.5">{ch.title}</div>
+                      </td>
+                      <td className="py-2.5 px-3 text-[var(--muted)]">{ch.level1}</td>
+                      <td className="py-2.5 px-3 text-[var(--muted)]">{ch.level2}</td>
+                      <td className="py-2.5 px-3 text-[var(--muted)]">{ch.level3}</td>
+                      <td className="py-2.5 px-3">
+                        <div className="text-[var(--muted)]">{ch.mechanism}</div>
+                        <div className="text-[11px] font-semibold text-[var(--positive)] mt-1">{ch.cluster_owner}</div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </SfCard>
+          )}
+        </div>
       ) : displayMode === 'cards' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredSections.map((sec) => (

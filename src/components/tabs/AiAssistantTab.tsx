@@ -60,7 +60,7 @@ export function AiAssistantTab({
             <span>หัวข้อวินิจฉัยสำคัญ</span>
           </div>
           <p className="text-xs text-[var(--muted)] leading-relaxed">
-            AI จะปรับน้ำหนักคำตอบตามมุมมองปัจจุบัน ({currentRoleObj.short}) พร้อมชี้รหัสเอกสารในคลัง 100 ไฟล์
+            AI จะปรับน้ำหนักคำตอบตามมุมมองปัจจุบัน ({currentRoleObj.short}) พร้อมชี้รหัสเอกสารในคลัง 12 หมวด (103 ไฟล์)
           </p>
           <div className="space-y-2 max-h-[520px] overflow-y-auto pr-1">
             {DB.aiKnowledgeBase.map((card) => (

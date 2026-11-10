@@ -1,8 +1,8 @@
 {
   "name": "tsri-legal-km-cloudflare-portal",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "private": true,
-  "description": "ระบบสืบค้นและวิเคราะห์ฐานข้อมูลกฎหมาย สกสว. 11 หมวด (100 ไฟล์) ตามอำนาจหน้าที่ 5 ระดับ พร้อมระบบ AI RAG บน Cloudflare Pages / Workers + D1",
+  "description": "ระบบสืบค้นและวิเคราะห์ฐานข้อมูลกฎหมาย สกสว. รุ่น V6 (12 หมวด 104 รหัส / 103 ไฟล์ใช้งานจริง · ความก้าวหน้า 75–80%) ตามอำนาจหน้าที่ 5 ระดับ พร้อมระบบ AI RAG บน Cloudflare Pages / Workers + D1",
   "type": "module",
   "scripts": {
     "dev": "vite",

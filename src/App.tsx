@@ -42,16 +42,16 @@ import { DevTab } from './components/tabs/DevTab';
 const INITIAL_AI_MESSAGES: AiMessage[] = [
   {
     role: 'assistant',
-    title: 'ระบบ AI ผู้ช่วยสืบค้นและวินิจฉัยข้อกฎหมาย สกสว. (TSRI Legal RAG Engine)',
+    title: 'ระบบ AI ผู้ช่วยสืบค้นและวินิจฉัยข้อกฎหมาย สกสว. (TSRI Legal RAG Engine · V6)',
     statutory_basis:
-      'ฐานข้อมูลอ้างอิง: คลังข้อมูลกฎหมาย สกสว. ครบ 11 หมวด (100 ไฟล์ใช้งานจริง / 101 รหัสทะเบียน) เชื่อมโยง 9 Clusters (112 ภารกิจ · 159 คู่เชื่อมเอกสาร) ตามกรอบ TOR-PROJ-001-2569',
+      'ฐานข้อมูลอ้างอิงรุ่น V6 (ความก้าวหน้า 75–80%): คลังข้อมูลกฎหมาย สกสว. ครบ 12 หมวด (103 ไฟล์ใช้งานจริง / 104 รหัสทะเบียน รวม พ.ร.บ.งบประมาณ/การคลัง/พัสดุ) เชื่อมโยง 24 สายโซ่ 3 ระดับ และ 9 Clusters (112 ภารกิจ · 159 คู่เชื่อมเอกสาร)',
     operational_rule:
       'เลือก "มุมมองตามระดับตำแหน่ง (Role Lens)" ด้านบนเพื่อให้ AI ปรับสัดส่วนคำตอบตามอำนาจหน้าที่ (80:20, 60:40, 45:55, 30:70) หรือแตะโจทย์ตัวอย่างเพื่อดูผลวินิจฉัยพร้อมรหัสเอกสารต้นฉบับ',
     checklist: [
-      'ค้นหาด้วยคำสำคัญ เช่น "500,000 บาท พด.70/2564", "คำรับรอง มาตรา 18", "คืนเงิน PMU 45 วัน", "ทุน ORG มาตรา 43", "TRIUP มาตรา 8", "ความลับ มาตรา 36" หรือ "ปิดงบ 90 วัน 180 วัน"',
+      'ค้นหาด้วยคำสำคัญ เช่น "500,000 บาท พด.70/2564", "คำรับรอง มาตรา 18", "คืนเงิน PMU 45 วัน", "ทุน ORG มาตรา 43", "TRIUP มาตรา 8", "ความลับ มาตรา 36" หรือ "พ.ร.บ.วิธีการงบประมาณ / จัดซื้อจัดจ้าง"',
       'ทุกคำตอบอ้างอิงรหัสทะเบียน TSRI-F / DOC-ID พร้อมลิงก์เปิดไฟล์จริงใน Google Drive',
     ],
-    docs: ['TSRI-F01-01-001', 'TSRI-F02-01-001', 'TSRI-F04-00-012', 'TSRI-F11-00-001'],
+    docs: ['TSRI-F01-01-001', 'TSRI-F02-01-001', 'TSRI-F04-00-012', 'TSRI-F12-01-001'],
   },
 ];
 
@@ -67,7 +67,7 @@ export default function App() {
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
   // Tab 2: Legal Repository & Section Explorer State
-  const [repoSubView, setRepoSubView] = useState<'files' | 'sections'>('files');
+  const [repoSubView, setRepoSubView] = useState<'files' | 'sections' | 'chains24'>('files');
   const [selectedCat, setSelectedCat] = useState('ALL');
   const [selectedCluster, setSelectedCluster] = useState('ALL');
   const [selectedTorLevel, setSelectedTorLevel] = useState('ALL');
@@ -405,7 +405,7 @@ export default function App() {
                   TSRI Legal Portal
                 </div>
                 <div className="text-[11px] text-[var(--muted)] truncate">
-                  สกสว. 11 หมวด · 100 ไฟล์ · Soft Focus UI
+                  สกสว. 12 หมวด · 103 ไฟล์ · รุ่น V6 (Soft Focus UI)
                 </div>
               </div>
             </div>
@@ -480,7 +480,7 @@ export default function App() {
                 className="sf-button sf-button--secondary shrink-0"
               >
                 <ExternalLink className="w-4 h-4" />
-                <span>เปิด Drive 11 หมวด</span>
+                <span>เปิด Drive 12 หมวด (V6)</span>
               </a>
             </div>
 

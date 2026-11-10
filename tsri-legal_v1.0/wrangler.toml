@@ -1,0 +1,25 @@
+# Cloudflare Pages & Workers Configuration for TSRI Legal & Competency Intelligence Portal
+# โครงการวิจัย PRJ-TSRI-2569-001 (TOR-PROJ-001-2569)
+name = "tsri-legal-km-portal"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "dist"
+
+# 1. Cloudflare D1 Serverless SQL Database Binding (เก็บข้อมูลเอกสาร 101 รหัส, 9 Clusters, Cross-List 15, ข้อสอบ 30:70)
+[[d1_databases]]
+binding = "DB"
+database_name = "tsri_legal_km_db"
+database_id = "00000000-0000-0000-0000-000000000000" # แทนที่ด้วย database_id จากคำสั่ง `npx wrangler d1 create tsri_legal_km_db`
+
+# 2. Cloudflare Workers AI Binding (สำหรับรัน LLM @cf/meta/llama-3.1-8b-instruct และ Embeddings @cf/baai/bge-m3)
+[ai]
+binding = "AI"
+
+# 3. Cloudflare Vectorize Index Binding (สำหรับทำ Semantic Vector Search บนตัวบทกฎหมายรายมาตรา)
+[[vectorize]]
+binding = "VECTORIZE_INDEX"
+index_name = "tsri-legal-bge-m3-index"
+
+[vars]
+PROJECT_CODE = "PRJ-TSRI-2569-001"
+TOR_REFERENCE = "TOR-PROJ-001-2569"
+DRIVE_ROOT_URL = "https://drive.google.com/drive/folders/1lGYjlvzdd-9CyjlBt2rdOdWdX-eLCLq9"

@@ -18,6 +18,9 @@ export type CrossListItem = (typeof MASTER_BUNDLE)['crossList15'][number];
 export type InterviewQuestion = (typeof MASTER_BUNDLE)['interviewQuestions32'][number];
 export type VideoClipItem = (typeof MASTER_BUNDLE)['clips15'][number];
 export type ExamItem = (typeof MASTER_BUNDLE)['examItems15'][number];
+export type LegalChain24 = (typeof MASTER_BUNDLE)['chains24'][number];
+export type TorLevel3 = (typeof MASTER_BUNDLE)['torLevels3'][number];
+export type TorDeliverable6 = (typeof MASTER_BUNDLE)['torDeliverables6'][number];
 
 export type C1C2ARating = {
   C1: string;

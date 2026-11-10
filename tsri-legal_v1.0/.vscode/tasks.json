@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. Start Dev Server (Vite)",
+      "type": "shell",
+      "command": "npm run dev",
+      "problemMatcher": []
+    },
+    {
+      "label": "2. Initialize Local Cloudflare D1 Database",
+      "type": "shell",
+      "command": "npm run db:init:local",
+      "problemMatcher": []
+    },
+    {
+      "label": "3. Deploy to Cloudflare Pages",
+      "type": "shell",
+      "command": "npm run deploy",
+      "problemMatcher": []
+    }
+  ]
+}

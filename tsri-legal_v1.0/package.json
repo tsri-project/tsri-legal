@@ -1,0 +1,34 @@
+{
+  "name": "tsri-legal-km-cloudflare-portal",
+  "version": "6.0.0",
+  "private": true,
+  "description": "ระบบสืบค้นและวิเคราะห์ฐานข้อมูลกฎหมาย สกสว. รุ่น V6 (12 หมวด 104 รหัส / 103 ไฟล์ใช้งานจริง · ความก้าวหน้า 75–80%) ตามอำนาจหน้าที่ 5 ระดับ พร้อมระบบ AI RAG บน Cloudflare Pages / Workers + D1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "wrangler pages dev dist --d1=DB=tsri_legal_km_db",
+    "deploy": "vite build && wrangler pages deploy dist --project-name=tsri-legal-km-portal",
+    "db:init:local": "wrangler d1 execute tsri_legal_km_db --local --file=./db/schema.sql && wrangler d1 execute tsri_legal_km_db --local --file=./db/seed.sql",
+    "db:init:remote": "wrangler d1 execute tsri_legal_km_db --remote --file=./db/schema.sql && wrangler d1 execute tsri_legal_km_db --remote --file=./db/seed.sql"
+  },
+  "dependencies": {
+    "hono": "^4.6.3",
+    "lucide-react": "^0.454.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.13.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "wrangler": "^3.83.0"
+  }
+}

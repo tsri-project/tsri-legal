@@ -29,8 +29,12 @@ app.get('/health', (c) => {
     status: 'ok',
     project: c.env.PROJECT_CODE || 'PRJ-TSRI-2569-001',
     tor: c.env.TOR_REFERENCE || 'TOR-PROJ-001-2569',
-    repositoryFiles: 100,
-    registeredCodes: 101,
+    version: "6.0.0",
+    progressRange: "75-80% (G1 80% / Awaiting G2 Legal Advisor Sign-off 75%)",
+    categories: 12,
+    repositoryFiles: 103,
+    registeredCodes: 104,
+    multiLevelChains: 24,
     clusters: 9,
     crossListItems: 15,
     engine: 'Cloudflare Pages Functions + D1 + Workers AI',
@@ -76,6 +80,14 @@ app.get('/crosslist', async (c) => {
   }
   sql += ' ORDER BY cl_code ASC';
   const { results } = await c.env.DB.prepare(sql).bind(...params).all();
+  return c.json({ count: results.length, results });
+});
+
+// 2b. Get 24 Multi-Level Legal Linkage Chains from D1
+app.get('/chains24', async (c) => {
+  const { results } = await c.env.DB.prepare(
+    'SELECT * FROM legal_chains_24 ORDER BY chain_id ASC'
+  ).all();
   return c.json({ count: results.length, results });
 });
 

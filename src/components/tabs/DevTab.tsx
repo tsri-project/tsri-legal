@@ -61,7 +61,7 @@ export function DevTab({ onCopyText }: DevTabProps) {
             <ul className="space-y-1.5 list-disc list-inside opacity-90 leading-relaxed">
               <li>Edge API: Hono (<code>functions/api/[[route]].ts</code>)</li>
               <li>Database: Cloudflare D1 (<code>db/schema.sql</code> &amp; <code>db/seed.sql</code>)</li>
-              <li>Seeded Records: 101 รหัส, 9 Clusters, 15 Cross-List, 32 คำถาม, 15 คลิป, 15 ข้อสอบ</li>
+              <li>Seeded Records: รุ่น V6 ครบ 104 รหัส (12 หมวด · 103 ไฟล์จริง), 24 สายโซ่ 3 ระดับ, 9 Clusters, 15 Cross-List, 32 คำถาม, 15 คลิป, 15 ข้อสอบ</li>
             </ul>
           </SfCard>
 
