@@ -1,0 +1,14 @@
+{
+  "project": "TSRI Legal & Competency Intelligence Portal (PRJ-TSRI-2569-001)",
+  "framework": "React + Vite + TypeScript + Cloudflare Pages/Workers + D1 + Workers AI",
+  "entry": "src/App.tsx",
+  "backendEntry": "functions/api/[[route]].ts",
+  "databaseSchema": "db/schema.sql",
+  "databaseSeed": "db/seed.sql",
+  "recommendedTasks": [
+    "npm install",
+    "npm run db:init:local",
+    "npm run dev",
+    "npm run deploy"
+  ]
+}
